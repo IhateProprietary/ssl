@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-void decode(uint64_t *dst, uint8_t *src, uint32_t len)
+void decode(uint32_t *dst, uint8_t *src, uint32_t len)
 {
 	uint32_t i;
 	uint32_t j;

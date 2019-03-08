@@ -133,9 +133,8 @@ static const void *body(MD5_CTX *ctx, const void *data, unsigned long size)
 		STEP(F, d, a, b, c, SET(13), 0xfd987193, 12)
 		STEP(F, c, d, a, b, SET(14), 0xa679438e, 17)
 		STEP(F, b, c, d, a, SET(15), 0x49b40821, 22)
-
 /* Round 2 */
-		STEP(G, a, b, c, d, GET(1), 0xf61e2562, 5)
+		STEP(G, a, b, c, d, GET(1), 0xf61e2562, 5);
 		STEP(G, d, a, b, c, GET(6), 0xc040b340, 9)
 		STEP(G, c, d, a, b, GET(11), 0x265e5a51, 14)
 		STEP(G, b, c, d, a, GET(0), 0xe9b6c7aa, 20)
@@ -151,7 +150,6 @@ static const void *body(MD5_CTX *ctx, const void *data, unsigned long size)
 		STEP(G, d, a, b, c, GET(2), 0xfcefa3f8, 9)
 		STEP(G, c, d, a, b, GET(7), 0x676f02d9, 14)
 		STEP(G, b, c, d, a, GET(12), 0x8d2a4c8a, 20)
-
 /* Round 3 */
 		STEP(H, a, b, c, d, GET(5), 0xfffa3942, 4)
 		STEP(H2, d, a, b, c, GET(8), 0x8771f681, 11)
@@ -169,7 +167,6 @@ static const void *body(MD5_CTX *ctx, const void *data, unsigned long size)
 		STEP(H2, d, a, b, c, GET(12), 0xe6db99e5, 11)
 		STEP(H, c, d, a, b, GET(15), 0x1fa27cf8, 16)
 		STEP(H2, b, c, d, a, GET(2), 0xc4ac5665, 23)
-
 /* Round 4 */
 		STEP(I, a, b, c, d, GET(0), 0xf4292244, 6)
 		STEP(I, d, a, b, c, GET(7), 0x432aff97, 10)
@@ -187,12 +184,10 @@ static const void *body(MD5_CTX *ctx, const void *data, unsigned long size)
 		STEP(I, d, a, b, c, GET(11), 0xbd3af235, 10)
 		STEP(I, c, d, a, b, GET(2), 0x2ad7d2bb, 15)
 		STEP(I, b, c, d, a, GET(9), 0xeb86d391, 21)
-
 		a += saved_a;
 		b += saved_b;
 		c += saved_c;
 		d += saved_d;
-
 		ptr += 64;
 	} while (size -= 64);
 
@@ -245,7 +240,6 @@ void MD5_Update(MD5_CTX *ctx, const void *data, unsigned long size)
 		data = body(ctx, data, size & ~(unsigned long)0x3f);
 		size &= 0x3f;
 	}
-
 	memcpy(ctx->buffer, data, size);
 }
 
@@ -277,9 +271,7 @@ void MD5_Final(unsigned char *result, MD5_CTX *ctx)
 	ctx->lo <<= 3;
 	OUT(&ctx->buffer[56], ctx->lo)
 	OUT(&ctx->buffer[60], ctx->hi)
-
 	body(ctx, ctx->buffer, 64);
-
 	OUT(&result[0], ctx->a)
 	OUT(&result[4], ctx->b)
 	OUT(&result[8], ctx->c)
@@ -289,3 +281,22 @@ void MD5_Final(unsigned char *result, MD5_CTX *ctx)
 }
 
 #endif
+#include <unistd.h>
+
+int		main(void)
+{
+	char buf[1024];
+	char digest[16];
+	MD5_CTX ctx;
+	ssize_t ret;
+
+	MD5_Init(&ctx);
+	while ((ret = read(0, buf, 1024)) > 0)
+		MD5_Update(&ctx, buf, ret);
+	MD5_Final(digest, &ctx);
+	for (int i = 0; i < 16; i++)
+	{
+		printf("%hhx", digest[i]);
+	}
+	printf("\n");
+}

@@ -12,8 +12,8 @@ typedef struct s_md5ctx
 
 typedef struct s_md5rot
 {
-	uint32_t *rot;
-	uint32_t *sin;
+	const uint32_t *rot;
+	const uint32_t *sin;
 	uint32_t *x;
 }	md5rot_t;
 
