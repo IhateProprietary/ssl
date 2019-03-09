@@ -5,9 +5,9 @@
 
 typedef struct s_md5ctx
 {
-	uint32_t r[4];
 	uint32_t b[2];
 	uint8_t buf[64];
+	uint32_t r[4];
 }	md5ctx_t;
 
 typedef struct s_md5rot

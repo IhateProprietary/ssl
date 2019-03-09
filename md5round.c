@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "md5.h"
 
-void rounds(
+void md5rounds(
 	uint32_t (*t)(uint32_t, uint32_t, uint32_t),
 	uint32_t *reg,
 	uint32_t *a,
@@ -30,7 +30,7 @@ void rounds(
 	}
 }
 
-void add(uint32_t *r, uint32_t *_r)
+void md5add(uint32_t *r, uint32_t *_r)
 {
 	r[0] += _r[0];
 	r[1] += _r[1];
@@ -59,9 +59,9 @@ void md5transform(uint32_t *r, uint8_t *block)
 
 	memcpy(_r, r, sizeof(_r));
 	decode(x, block, 64);
-	rounds(f, _r, (uint32_t[2]){0, 1}, (md5rot_t){rot, sin, x});
-	rounds(g, _r, (uint32_t[2]){1, 5}, (md5rot_t){rot + 4, sin + 16, x});
-	rounds(h, _r, (uint32_t[2]){5, 3}, (md5rot_t){rot + 8, sin + 32, x});
-	rounds(i, _r, (uint32_t[2]){0, 7}, (md5rot_t){rot + 12, sin + 48, x});
-	add(r, _r);
+	md5rounds(f, _r, (uint32_t[2]){0, 1}, (md5rot_t){rot, sin, x});
+	md5rounds(g, _r, (uint32_t[2]){1, 5}, (md5rot_t){rot + 4, sin + 16, x});
+	md5rounds(h, _r, (uint32_t[2]){5, 3}, (md5rot_t){rot + 8, sin + 32, x});
+	md5rounds(i, _r, (uint32_t[2]){0, 7}, (md5rot_t){rot + 12, sin + 48, x});
+	md5add(r, _r);
 }

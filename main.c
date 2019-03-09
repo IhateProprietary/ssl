@@ -1,20 +1,21 @@
-#include "md5.h"
+//#include "md5.h"
 #include <unistd.h>
+#include "sha2.h"
 
-int		main(void)
+int		main()
 {
 	char buf[1024];
-	char digest[16];
-	md5ctx_t ctx;
+	char digest[32];
+	sha2ctx_t ctx;
 	ssize_t ret;
 
-	md5init(&ctx);
+	sha2init(&ctx);
 	while ((ret = read(0, buf, 1024)) > 0)
-		md5update(&ctx, (uint8_t*)buf, ret);
-	md5final((uint8_t*)digest, &ctx);
-	for (int i = 0; i < 16; i++)
+		sha2update(&ctx, (uint8_t*)buf, ret);
+	sha2final((uint8_t*)digest, &ctx, 32);
+	for (int i = 0; i < 32; i++)
 	{
-		printf("%hhx", digest[i]);
+		printf("%02hhx", digest[i]);
 	}
 	printf("\n");
 }
