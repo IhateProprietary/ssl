@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5type.h                                          :+:      :+:    :+:   */
+/*   md5typedef.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/11 16:05:06 by jye               #+#    #+#             */
-/*   Updated: 2019/03/11 16:15:36 by jye              ###   ########.fr       */
+/*   Created: 2019/03/11 16:05:09 by jye               #+#    #+#             */
+/*   Updated: 2019/03/11 16:21:04 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MD5TYPE_H
-# define MD5TYPE_H
+#ifndef MD5TYPEDEF_H
+# define MD5TYPEDEF_H
 
-# include <stdint.h>
+# define TYPEDEF(name) typedef struct s_##name name##_t
+# define MD5CTX TYPEDEF(ctx)
+# define ROT TYPEDEF(md5rot)
 
-typedef uint32_t(*t_md5basic)(uint32_t, uint32_t, uint32_t);
-
-struct	s_md5rot
-{
-	const uint32_t	*rot;
-	const uint32_t	*sin;
-	uint32_t		*x;
-};
+MD5ROT;
+CTX;
 
 #endif

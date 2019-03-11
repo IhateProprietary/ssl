@@ -1,7 +1,18 @@
-#include <stdint.h>
-#include "md5.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   encode.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/11 15:54:26 by jye               #+#    #+#             */
+/*   Updated: 2019/03/11 16:22:43 by jye              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void md5encode(uint8_t *dst, uint32_t *src, uint32_t len)
+#include <stdint.h>
+
+void	md5encode(uint8_t *dst, uint32_t *src, uint32_t len)
 {
 	uint32_t i;
 	uint32_t j;
@@ -19,7 +30,7 @@ void md5encode(uint8_t *dst, uint32_t *src, uint32_t len)
 	}
 }
 
-void sha2encode(uint8_t *dst, uint32_t *src, uint32_t len)
+void	sha2encode(uint8_t *dst, uint32_t *src, uint32_t len)
 {
 	uint32_t i;
 	uint32_t j;

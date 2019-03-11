@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5type.h                                          :+:      :+:    :+:   */
+/*   global.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/11 16:05:06 by jye               #+#    #+#             */
-/*   Updated: 2019/03/11 16:15:36 by jye              ###   ########.fr       */
+/*   Created: 2019/03/11 16:09:02 by jye               #+#    #+#             */
+/*   Updated: 2019/03/11 16:13:43 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MD5TYPE_H
-# define MD5TYPE_H
+#ifndef GLOBAL_H
+# define GLOBAL_H
 
-# include <stdint.h>
-
-typedef uint32_t(*t_md5basic)(uint32_t, uint32_t, uint32_t);
-
-struct	s_md5rot
+struct	s_ctx
 {
-	const uint32_t	*rot;
-	const uint32_t	*sin;
-	uint32_t		*x;
+	uint32_t	b[2];
+	uint8_t		buf[64];
+	uint32_t	r[8];
 };
 
 #endif

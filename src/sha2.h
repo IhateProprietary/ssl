@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sha2.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/11 16:08:53 by jye               #+#    #+#             */
+/*   Updated: 2019/03/11 16:12:23 by jye              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SHA2_H
 # define SHA2_H
 
 # include <stdint.h>
-# include "sha2type.h"
+# include "sha2typedef.h"
+# include "global.h"
 
 uint32_t	rotl(uint32_t x, uint32_t n);
 uint32_t	rotr(uint32_t x, uint32_t n);
@@ -14,9 +27,9 @@ uint32_t	sha2ch(uint32_t x, uint32_t y, uint32_t z);
 uint32_t	sha2maj(uint32_t x, uint32_t y, uint32_t z);
 void		sha2encode(uint8_t *dst, uint32_t *src, uint32_t len);
 void		sha2decode(uint32_t *dst, uint8_t *src, uint32_t len);
-void		sha2init(sha2ctx_t *ctx, uint32_t *init);
-void		sha2update(sha2ctx_t *ctx, uint8_t *input, uint32_t size);
+void		sha2init(ctx_t *ctx, uint32_t *init);
+void		sha2update(ctx_t *ctx, uint8_t *input, uint32_t size);
 void		sha2transform(uint32_t *r, uint8_t *b);
-void		sha2final(uint8_t *digest, sha2ctx_t *ctx, uint32_t digsize);
+void		sha2final(uint8_t *digest, ctx_t *ctx, uint32_t digsize);
 
 #endif
