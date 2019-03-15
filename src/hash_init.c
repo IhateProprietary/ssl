@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 15:51:20 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 18:45:04 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 20:24:27 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ ctx_t		g_sha256_h0 = {
 	.decode = sha2decode,
 	.encode = sha2encode,
 	.final = sha2final,
-	.hashname = "SHA256"
+	.hashname = "SHA256",
+	.context = 0
 };
 
 ctx_t		g_sha224_h0 = {
@@ -46,7 +47,8 @@ ctx_t		g_sha224_h0 = {
 	.decode = sha2decode,
 	.encode = sha2encode,
 	.final = sha2final,
-	.hashname = "SHA224"
+	.hashname = "SHA224",
+	.context = 0
 };
 
 ctx_t		g_md5_h0 = {
@@ -62,7 +64,8 @@ ctx_t		g_md5_h0 = {
 	.decode = md5decode,
 	.encode = md5encode,
 	.final = md5final,
-	.hashname = "MD5"
+	.hashname = "MD5",
+	.context = 0
 };
 
 uint32_t	hash_string(char *str)
@@ -78,23 +81,30 @@ uint32_t	hash_string(char *str)
 	return (hash);
 }
 
-int			setcmd(char **av, ctx_t *ctx)
+ctx_t		*setcmd(char **av, ctx_t *ctx)
 {
 	uint32_t	hash;
 
-	hash = hash_string(av[1]);
+	hash = hash_string(av[0]);
 	if (hash == 0x7b2cc030)
+	{
 		ft_memcpy(ctx, &g_sha256_h0, sizeof(*ctx));
+		return (&g_sha256_h0);
+	}
 	else if (hash == 0xc210c48b)
+	{
 		ft_memcpy(ctx, &g_sha224_h0, sizeof(*ctx));
+		return (&g_sha224_h0);
+	}
 	else if (hash == 0xc78645bc)
+	{
 		ft_memcpy(ctx, &g_md5_h0, sizeof(*ctx));
-	else
-		return (1);
+		return (&g_md5_h0);
+	}
 	return (0);
 }
 
-void		hash_init(int ac, char **av, ctx_t *ctx)
+ctx_t		*hash_init(int ac, char **av, ctx_t *ctx)
 {
 	static struct s_options	opt[] = {
 		{"string", req_arg, 0, 's'}, {"verbose", no_arg, 0, 'p'},
@@ -102,22 +112,22 @@ void		hash_init(int ac, char **av, ctx_t *ctx)
 		{0, 0, 0, 0}
 	};
 	int						flag;
+	ctx_t					*algo;
 
-	if (setcmd(av, ctx))
-		error(av[1], CMD_ERROR);
-	av++;
-	ac--;
+	if ((algo = setcmd(av, ctx)) == 0)
+		error(av[0], CMD_ERROR);
 	while ((flag = ft_getopt_long(ac, av, "spqr", opt)) > -1)
 	{
 		if (flag == '?')
 			error(0, OPT_ERROR);
 		else if (flag == 's')
-			shash_digest(ctx, g_optarg_);
+			shash_digest(ctx, g_optarg_, algo);
 		else if (flag == 'p')
-			ctx->opt |= STDOUT;
+			hash_stdin(ctx, STDOUT, algo);
 		else if (flag == 'q')
 			ctx->opt |= QUIET;
 		else if (flag == 'r')
 			ctx->opt |= REVERSE;
 	}
+	return (algo);
 }

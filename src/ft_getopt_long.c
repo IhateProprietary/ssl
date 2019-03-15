@@ -6,7 +6,7 @@
 /*   By: root <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 11:55:45 by root              #+#    #+#             */
-/*   Updated: 2019/03/15 18:47:49 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 19:41:58 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ struct s_options	*ft_opt_getstruct_long(char *s,
 	if (has_arg)
 		g_optarg_ = has_arg + 1;
 	ncmp = (size_t)has_arg ? (size_t)(has_arg - s) : ft_strlen(s);
-	while (longopt->s != NULL && longopt->has_arg != 0 && \
-		longopt->f != 0 && longopt->val != 0)
+	while (longopt->s != NULL || longopt->has_arg != 0 || \
+		longopt->f != 0 || longopt->val != 0)
 	{
 		if (ncmp == ft_strlen(longopt->s) &&
 				!ft_strncmp(s, longopt->s, ncmp))
@@ -54,8 +54,8 @@ struct s_options	*ft_opt_getstruct_long(char *s,
 
 struct s_options	*ft_opt_getstruct(char s, struct s_options *longopt)
 {
-	while (longopt->s != NULL && longopt->has_arg == 0 && \
-		longopt->f == 0 && longopt->val == 0)
+	while (longopt->s != NULL || longopt->has_arg != 0 || \
+		longopt->f != 0 || longopt->val != 0)
 	{
 		if (s == longopt->val)
 			break ;
@@ -73,8 +73,17 @@ static int			ft_opt_end(char **nextchar)
 static int			ft_getopt_(char **nextchar, char **av,
 		struct s_options *lopt)
 {
-	if (lopt->has_arg == req_arg && (*nextchar)[1] == 0)
+	if ((lopt->has_arg == opt_arg || lopt->has_arg == req_arg) && \
+		(*nextchar)[1] == 0)
 		g_optarg_ = av[g_optind_++];
+	else if ((lopt->has_arg == opt_arg || lopt->has_arg == req_arg) && \
+		(*nextchar)[1])
+	{
+		g_optarg_ = *nextchar + 1;
+		*nextchar = "";
+	}
+	else
+		(*nextchar)++;
 	if (lopt->f)
 		*lopt->f = lopt->val;
 	return (lopt->f ? 0 : lopt->val);

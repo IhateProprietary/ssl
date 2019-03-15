@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 17:04:50 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 18:48:35 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 20:29:29 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 void		usage(void)
 {
-	ft_dprintf(2, "usage: ft_ssl command [command opts] [command args]\n");
+	ft_dprintf(2, "usage: ft_ssl command [command opts] [command args]\n"
+		"Message Digest commands:\nmd5\nsha224\nsha256\n");
 	internal_home_made_exit(2);
 }
 
@@ -35,21 +36,23 @@ void		error(char *context, int type)
 int			main(int ac, char **av)
 {
 	ctx_t	ctx;
+	ctx_t	*algo;
 	int		i;
 	int		fd;
 
 	if (ac < 2)
 		usage();
-	hash_init(ac, av, &ctx);
+	algo = hash_init(ac - 1, av + 1, &ctx);
 	i = g_optind_ + 1;
+	if (!(ctx.opt & DID_HIS_JOB))
+		hash_stdin(&ctx, QUIET, algo);
 	while (i < ac)
 	{
 		if ((fd = open(av[i], O_RDONLY)) < 0)
-			ft_dprintf(2, "ft_ssl: File '%s' is not valid.", av[i]);
+			ft_dprintf(2, "ft_ssl: File '%s' is not valid.\n", av[i]);
 		else
 		{
-			fhash_digest(&ctx, fd);
-			hash_result(&ctx, av[i]);
+			fhash_digest(&ctx, fd, algo);
 			close(fd);
 		}
 		i++;

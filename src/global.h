@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 16:09:02 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 18:48:51 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 20:28:19 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ enum	e_opt {
 	SUMARGV = 0x1,
 	STDOUT = 0x2,
 	QUIET = 0x4,
-	REVERSE = 0x8
+	REVERSE = 0x8,
+	DID_HIS_JOB = 0x10
 };
 
 CTX;
@@ -50,17 +51,19 @@ struct	s_ctx
 	void		(*encode)(uint8_t *, uint32_t *, uint32_t);
 	void		(*final)(ctx_t *);
 	char		*hashname;
+	char		*context;
 	char		*s_;
 	size_t		len;
 };
 
-void	hash_init(int ac, char **av, ctx_t *ctx);
-void	hash_result(ctx_t *ctx, char *context);
+ctx_t	*hash_init(int ac, char **av, ctx_t *ctx);
+void	hash_result(ctx_t *ctx);
 void	hash_final(ctx_t *ctx);
 void	hash_update(ctx_t *ctx, uint8_t *data, uint64_t len);
 void	error(char *ctx, int type);
 void	internal_home_made_exit(int ret);
-void	fhash_digest(ctx_t *ctx, int fd);
-void	shash_digest(ctx_t *ctx, char *s);
+void	fhash_digest(ctx_t *ctx, int fd, ctx_t *reset);
+void	shash_digest(ctx_t *ctx, char *s, ctx_t *reset);
+void	hash_stdin(ctx_t *ctx, int opt, ctx_t *reset);
 
 #endif
