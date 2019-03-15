@@ -6,14 +6,14 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:56:03 by jye               #+#    #+#             */
-/*   Updated: 2019/03/11 15:59:47 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 17:10:25 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include "md5.h"
 
-void					magic(t_md5basic t,
+void					md5magic(t_md5basic t,
 	uint32_t **r,
 	uint32_t *x
 )

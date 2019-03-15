@@ -1,29 +1,57 @@
-//#include "md5.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/12 17:04:50 by jye               #+#    #+#             */
+/*   Updated: 2019/03/15 18:48:35 by jye              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
-#include "sha2.h"
+#include <fcntl.h>
+#include "global.h"
+#include "ft_printf.h"
+#include "ft_getopt_long.h"
 
-uint32_t sha224_h0[8] =
-            {0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939,
-             0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4};
-
-uint32_t sha256_h0[8] =
-            {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-			 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
-
-int		main()
+void		usage(void)
 {
-	char buf[1024];
-	char digest[32];
-	ctx_t ctx;
-	ssize_t ret;
+	ft_dprintf(2, "usage: ft_ssl command [command opts] [command args]\n");
+	internal_home_made_exit(2);
+}
 
-	sha2init(&ctx, sha256_h0);
-	while ((ret = read(0, buf, 1024)) > 0)
-		sha2update(&ctx, (uint8_t*)buf, ret);
-	sha2final((uint8_t*)digest, &ctx, 32);
-	for (int i = 0; i < 32; i++)
+void		error(char *context, int type)
+{
+	if (type == CMD_ERROR)
+		ft_dprintf(2, "ft_ssl: Error:'%s' is an invalid command.\n"
+			"Message Digest commands:\nmd5\nsha224\nsha256\n", context);
+	if (type == OPT_ERROR)
+		usage();
+	internal_home_made_exit(EXIT_FAILURE);
+}
+
+int			main(int ac, char **av)
+{
+	ctx_t	ctx;
+	int		i;
+	int		fd;
+
+	if (ac < 2)
+		usage();
+	hash_init(ac, av, &ctx);
+	i = g_optind_ + 1;
+	while (i < ac)
 	{
-		printf("%02hhx", digest[i]);
+		if ((fd = open(av[i], O_RDONLY)) < 0)
+			ft_dprintf(2, "ft_ssl: File '%s' is not valid.", av[i]);
+		else
+		{
+			fhash_digest(&ctx, fd);
+			hash_result(&ctx, av[i]);
+			close(fd);
+		}
+		i++;
 	}
-	printf("\n");
 }

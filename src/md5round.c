@@ -6,12 +6,13 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 16:16:40 by jye               #+#    #+#             */
-/*   Updated: 2019/03/11 16:17:56 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/15 18:53:35 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include "md5.h"
+#include "libft.h"
 
 void	md5rounds(
 	t_md5basic t,
@@ -31,7 +32,7 @@ void	md5rounds(
 	r = rot.rot;
 	while (i < 16)
 	{
-		magic(t,
+		md5magic(t,
 			(uint32_t*[4]){
 				&reg[(-i) & 3], &reg[(-i + 1) & 3],
 				&reg[(-i + 2) & 3], &reg[(-i + 3) & 3]},
@@ -68,8 +69,8 @@ void	md5transform(uint32_t *r, uint8_t *block)
 	uint32_t				r_[4];
 	uint32_t				x[16];
 
-	memcpy(r_, r, sizeof(r_));
-	decode(x, block, 64);
+	ft_memcpy(r_, r, sizeof(r_));
+	md5decode(x, block, 64);
 	md5rounds(f, r_, (uint32_t[2]){0, 1}, (md5rot_t){rot, sin, x});
 	md5rounds(g, r_, (uint32_t[2]){1, 5}, (md5rot_t){rot + 4, sin + 16, x});
 	md5rounds(h, r_, (uint32_t[2]){5, 3}, (md5rot_t){rot + 8, sin + 32, x});
