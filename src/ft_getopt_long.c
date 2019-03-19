@@ -6,7 +6,7 @@
 /*   By: root <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 11:55:45 by root              #+#    #+#             */
-/*   Updated: 2019/03/15 19:41:58 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/19 20:30:51 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,12 @@ static int			ft_opt_end(char **nextchar)
 static int			ft_getopt_(char **nextchar, char **av,
 		struct s_options *lopt)
 {
-	if ((lopt->has_arg == opt_arg || lopt->has_arg == req_arg) && \
-		(*nextchar)[1] == 0)
-		g_optarg_ = av[g_optind_++];
-	else if ((lopt->has_arg == opt_arg || lopt->has_arg == req_arg) && \
-		(*nextchar)[1])
+	if ((lopt->has_arg == opt_arg || lopt->has_arg == req_arg))
 	{
-		g_optarg_ = *nextchar + 1;
+		if ((*nextchar)[1])
+			g_optarg_ = *nextchar + 1;
+		else
+			g_optarg_ = av[g_optind_++];
 		*nextchar = "";
 	}
 	else

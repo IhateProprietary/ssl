@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 19:40:16 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 20:29:01 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/19 20:36:33 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	shash_digest(ctx_t *ctx, char *s, ctx_t *reset)
 
 void	print(uint8_t *digest, size_t dsize)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < dsize)
@@ -90,8 +90,8 @@ void	hash_result(ctx_t *ctx)
 		free(ctx->s_);
 		ctx->s_ = 0;
 	}
-	else if (!(ctx->opt & QUIET))
-		ft_dprintf(1, ctx->opt & SUMARGV ? "%s (\"%s\") = " : "%s(%s) = ",
+	else if (!(ctx->opt & QUIET) && !(ctx->opt & REVERSE))
+		ft_dprintf(1, ctx->opt & SUMARGV ? "%s (\"%s\") = " : "%s (%s) = ",
 			ctx->hashname, ctx->context);
 	print(digest, ctx->hashsize);
 	if (!(ctx->opt & STDOUT) && ctx->opt & REVERSE && !(ctx->opt & QUIET))

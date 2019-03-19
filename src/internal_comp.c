@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 18:45:40 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 16:48:01 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/19 20:01:25 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	internal_home_made_exit(int ret)
 {
+	(void)ret;
 	ASM(".intel_syntax\n\r"
 		"movq rax, 0x2000001\n\r"
 		"syscall");

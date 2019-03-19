@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 17:04:50 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 20:29:29 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/19 20:09:24 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			main(int ac, char **av)
 		usage();
 	algo = hash_init(ac - 1, av + 1, &ctx);
 	i = g_optind_ + 1;
-	if (!(ctx.opt & DID_HIS_JOB))
+	if (!(ctx.opt & DID_HIS_JOB) && i == ac)
 		hash_stdin(&ctx, QUIET, algo);
 	while (i < ac)
 	{
@@ -52,6 +52,7 @@ int			main(int ac, char **av)
 			ft_dprintf(2, "ft_ssl: File '%s' is not valid.\n", av[i]);
 		else
 		{
+			ctx.context = av[i];
 			fhash_digest(&ctx, fd, algo);
 			close(fd);
 		}

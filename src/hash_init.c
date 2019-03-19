@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 15:51:20 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 20:24:27 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/19 20:36:16 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ uint32_t	hash_string(char *str)
 	return (hash);
 }
 
-ctx_t		*setcmd(char **av, ctx_t *ctx)
+ctx_t		*setcmd(char *av, ctx_t *ctx)
 {
 	uint32_t	hash;
 
-	hash = hash_string(av[0]);
+	hash = hash_string(av);
 	if (hash == 0x7b2cc030)
 	{
 		ft_memcpy(ctx, &g_sha256_h0, sizeof(*ctx));
@@ -114,8 +114,9 @@ ctx_t		*hash_init(int ac, char **av, ctx_t *ctx)
 	int						flag;
 	ctx_t					*algo;
 
-	if ((algo = setcmd(av, ctx)) == 0)
+	if ((algo = setcmd(av[0], ctx)) == 0)
 		error(av[0], CMD_ERROR);
+	av[0] = "ft_ssl";
 	while ((flag = ft_getopt_long(ac, av, "spqr", opt)) > -1)
 	{
 		if (flag == '?')
