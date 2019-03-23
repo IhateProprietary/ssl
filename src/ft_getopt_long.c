@@ -6,7 +6,7 @@
 /*   By: root <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/14 11:55:45 by root              #+#    #+#             */
-/*   Updated: 2019/03/19 20:30:51 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/22 17:45:17 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int					ft_getopt_long(int ac, char **av,
 		ft_getopt_init(&pname, &nextchar, av[0]);
 	if (nextchar == NULL)
 		return (-1);
-	if ((*nextchar == 0 && g_optind_ >= ac) || av[g_optind_] == 0 ||
-		OPT_ISEND(av[g_optind_]))
+	if (*nextchar == 0 && (g_optind_ >= ac || av[g_optind_] == 0 ||
+							OPT_ISEND(av[g_optind_])))
 		return (ft_opt_end(&nextchar));
 	else if (*nextchar == 0 && OPT_ISLONG(av[g_optind_]))
 		return (ft_getopt_long_long(

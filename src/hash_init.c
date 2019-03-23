@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 15:51:20 by jye               #+#    #+#             */
-/*   Updated: 2019/03/19 20:36:16 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/22 18:12:52 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,58 @@
 #include "sha2.h"
 #include "ft_getopt_long.h"
 
-ctx_t		g_sha256_h0 = {
-	.b = {0, 0},
-	.buf = {0},
-	.r = {
-		0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-		0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-	},
-	.opt = 0,
-	.hashsize = 32,
-	.update = sha2update,
-	.decode = sha2decode,
-	.encode = sha2encode,
-	.final = sha2final,
-	.hashname = "SHA256",
-	.context = 0
-};
+#define H0_MAX 3
 
-ctx_t		g_sha224_h0 = {
-	.b = {0, 0},
-	.buf = {0},
-	.r = {
-		0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939,
-		0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4
-	},
-	.opt = 0,
-	.hashsize = 28,
-	.update = sha2update,
-	.decode = sha2decode,
-	.encode = sha2encode,
-	.final = sha2final,
-	.hashname = "SHA224",
-	.context = 0
-};
-
-ctx_t		g_md5_h0 = {
-	.b = {0, 0},
-	.buf = {0},
-	.r = {
-		0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476,
-		0x00000000, 0x00000000, 0x00000000, 0x00000000
-	},
-	.opt = 0,
-	.hashsize = 16,
-	.update = md5update,
-	.decode = md5decode,
-	.encode = md5encode,
-	.final = md5final,
-	.hashname = "MD5",
-	.context = 0
+ctx_t		g_h0[] = {
+	{
+		.b = {0, 0},
+		.buf = {0},
+		.r = {
+			0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+			0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+		},
+		.opt = 0,
+		.hashsize = 32,
+		.update = sha2update,
+		.decode = sha2decode,
+		.encode = sha2encode,
+		.final = sha2final,
+		.hashname = "SHA256",
+		.context = 0,
+		.hashvalue = 0x7b2cc030
+	}, {
+		.b = {0, 0},
+		.buf = {0},
+		.r = {
+			0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939,
+			0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4
+		},
+		.opt = 0,
+		.hashsize = 28,
+		.update = sha2update,
+		.decode = sha2decode,
+		.encode = sha2encode,
+		.final = sha2final,
+		.hashname = "SHA224",
+		.context = 0,
+		.hashvalue = 0xc210c48b
+	}, {
+		.b = {0, 0},
+		.buf = {0},
+		.r = {
+			0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476,
+			0x00000000, 0x00000000, 0x00000000, 0x00000000
+		},
+		.opt = 0,
+		.hashsize = 16,
+		.update = md5update,
+		.decode = md5decode,
+		.encode = md5encode,
+		.final = md5final,
+		.hashname = "MD5",
+		.context = 0,
+		.hashvalue = 0xc78645bc
+	}
 };
 
 uint32_t	hash_string(char *str)
@@ -84,22 +87,18 @@ uint32_t	hash_string(char *str)
 ctx_t		*setcmd(char *av, ctx_t *ctx)
 {
 	uint32_t	hash;
+	int			i;
 
 	hash = hash_string(av);
-	if (hash == 0x7b2cc030)
+	i = 0;
+	while (i < H0_MAX)
 	{
-		ft_memcpy(ctx, &g_sha256_h0, sizeof(*ctx));
-		return (&g_sha256_h0);
-	}
-	else if (hash == 0xc210c48b)
-	{
-		ft_memcpy(ctx, &g_sha224_h0, sizeof(*ctx));
-		return (&g_sha224_h0);
-	}
-	else if (hash == 0xc78645bc)
-	{
-		ft_memcpy(ctx, &g_md5_h0, sizeof(*ctx));
-		return (&g_md5_h0);
+		if (hash == g_h0[i].hashvalue)
+		{
+			ft_memcpy(ctx, &g_h0[i], sizeof(*ctx));
+			return (&g_h0[i]);
+		}
+		i++;
 	}
 	return (0);
 }

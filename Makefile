@@ -6,12 +6,12 @@
 #    By: jye <marvin@42.fr>                         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/19 19:47:40 by jye               #+#    #+#              #
-#    Updated: 2019/03/19 20:39:26 by jye              ###   ########.fr        #
+#    Updated: 2019/03/22 16:31:44 by jye              ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 SRC = decode encode internal_comp final ft_getopt_long ft_getopt_long1 hash_init main md5basic md5magic md5round \
 	rot sha2chmaj sha2sig sha2transform sslbasic sslbasic1 update

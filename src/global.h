@@ -6,7 +6,7 @@
 /*   By: jye <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 16:09:02 by jye               #+#    #+#             */
-/*   Updated: 2019/03/15 20:28:19 by jye              ###   ########.fr       */
+/*   Updated: 2019/03/22 18:07:44 by jye              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ struct	s_ctx
 	char		*context;
 	char		*s_;
 	size_t		len;
+	uint32_t	hashvalue;
 };
 
 ctx_t	*hash_init(int ac, char **av, ctx_t *ctx);
